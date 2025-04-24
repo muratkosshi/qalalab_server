@@ -26,11 +26,11 @@ class ProjectDetailView(APIView):
 
 
 class NewsListView(APIView):
-    """Список проектов"""
+    """Список новостей"""
 
     def get(self, request):
-        project = News.objects.all()
-        serializer = NewsListSerializer(project, many=True)
+        news = News.objects.all()
+        serializer = NewsListSerializer(news, many=True, context={"request": request})
         return Response(serializer.data)
 
 
@@ -39,7 +39,7 @@ class NewsDetailView(APIView):
 
     def get(self, request, pk):
         project = News.objects.get(id=pk)
-        serializer = NewsDetailSerializer(project)
+        serializer = NewsDetailSerializer(project, context={"request": request})
         return Response(serializer.data)
 
 

@@ -1,5 +1,7 @@
 from django.db import models
 
+from qalalab_server import settings
+
 
 class Post(models.Model):
     title = models.CharField("Заголовок", max_length=255)
@@ -27,14 +29,17 @@ class Projects(Post):
 
 
 class News(Post):
+    title = models.CharField("Заголовок", max_length=250)
+    description = models.TextField("Описание")
     image = models.ImageField("Изображение", upload_to="news/")
+
+    def get_image_url(self):
+        if self.image:
+            return f"{settings.MEDIA_URL}{self.image}"
+        return None
 
     def __str__(self):
         return self.title
-
-    class Meta:
-        verbose_name = "Новость"
-        verbose_name_plural = "Новости"
 
 
 class Event(Post):
